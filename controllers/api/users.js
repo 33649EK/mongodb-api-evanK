@@ -14,8 +14,6 @@ router.get("/", (req, res) => {
   }
 
   getAllUsers();
-  // console.log("GET /api/users");
-  // res.send("GET /api/users");
 });
 
 router.get("/:id", (req, res) => {
@@ -24,7 +22,6 @@ router.get("/:id", (req, res) => {
       const user = await User.findById(id)
         .populate("thoughts")
         .populate("friends", "-__v -thoughts -friends");
-      // console.log(user);
       res.json(user);
     } catch (err) {
       res.status(400).json(err);
@@ -90,6 +87,23 @@ router.post("/:userId/friends/:friendId", (req, res) => {
   }
 
   addFriend(req.params.userId, req.params.friendId);
+});
+
+router.delete("/:userId/friends/:friendId", (req, res) => {
+  async function removeFriend(userId, friendId) {
+    try {
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { friends: friendId } },
+        { new: true }
+      );
+      res.json(user);
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  }
+
+  removeFriend(req.params.userId, req.params.friendId);
 });
 
 module.exports = router;

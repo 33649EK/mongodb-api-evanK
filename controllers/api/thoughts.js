@@ -11,6 +11,17 @@ router.get("/", (req, res) => {
   }
 });
 
+// Get a thought by its _id
+router.get("/:id", (req, res) => {
+  try {
+    Thought.findById(req.params.id).then((thoughtData) => {
+      res.json(thoughtData);
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
 // Create a thought and adds to a specific user's thoughts array
 router.post("/:userId", (req, res) => {
   try {
@@ -74,17 +85,17 @@ router.post("/:thoughtId/reactions", (req, res) => {
 
 // Delete a reaction from a thought
 router.delete("/:thoughtId/reactions/:reactionId", (req, res) => {
-  try {
-    Thought.findByIdAndUpdate(
-      req.params.thoughtId,
-      { $pull: { reactions: { reactionId: req.params.reactionId } } },
-      { new: true }
-    ).then((thoughtData) => {
-      res.json(thoughtData);
-    });
-  } catch (err) {
-    res.status(400).json(err);
-  }
+    try {
+        Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $pull: { reactions: { _id: req.params.reactionId } } },
+        { new: true }
+        ).then((thoughtData) => {
+        res.json(thoughtData);
+        });
+    } catch (err) {
+        res.status(400).json(err);
+    }
 });
 
 module.exports = router;
