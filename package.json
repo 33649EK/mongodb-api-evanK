@@ -8,5 +8,10 @@
     "start": "node server.js"
   },
   "author": "Evan Keller",
-  "license": "MIT"
+  "license": "MIT",
+
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^7.0.2"
+  }
 }
