@@ -10,8 +10,4 @@ const reactionSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-reactionSchema.virtual("reactionCount").get(function () {
-  return this.reactions.length;
-});
-
 module.exports = reactionSchema;
